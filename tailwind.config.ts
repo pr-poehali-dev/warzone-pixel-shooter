@@ -6,7 +6,7 @@ export default {
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
+		"./src/**/*.{ts,tsx}"
 	],
 	prefix: "",
 	theme: {
@@ -61,7 +61,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				military: {
+					dark: '#1a2e1a',
+					camo: '#3d4a2c',
+					explosion: '#ff6b35',
+					danger: '#e63946',
+					gold: '#f4a261',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +91,28 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-glow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.5' },
+				},
+				'shake': {
+					'0%, 100%': { transform: 'translateX(0)' },
+					'10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-2px)' },
+					'20%, 40%, 60%, 80%': { transform: 'translateX(2px)' },
+				},
+				'explosion': {
+					'0%': { transform: 'scale(0)', opacity: '1' },
+					'50%': { transform: 'scale(1.5)', opacity: '0.8' },
+					'100%': { transform: 'scale(2)', opacity: '0' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+				'shake': 'shake 0.5s ease-in-out',
+				'explosion': 'explosion 0.6s ease-out forwards',
 			}
 		}
 	},
