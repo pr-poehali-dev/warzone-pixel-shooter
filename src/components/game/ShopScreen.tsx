@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { User, storage } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
@@ -16,13 +18,27 @@ const WEAPONS = [
   { id: 'sniper', name: 'Снайперская винтовка', price: 3000, icon: '🎯' },
   { id: 'grenade', name: 'Граната', price: 200, icon: '💣' },
   { id: 'missile', name: 'Боеголовка', price: 5000, icon: '🚀' },
-  { id: 'tank', name: 'Танк Т-90', price: 10000, icon: '🛡️' },
+];
+
+const VEHICLES = [
+  { id: 'jeep', name: 'Военный джип', price: 3500, icon: '🚙' },
+  { id: 'truck', name: 'Грузовик', price: 5000, icon: '🚚' },
+  { id: 'apc', name: 'БТР', price: 8000, icon: '🚐' },
+  { id: 'hummer', name: 'Хаммер', price: 10000, icon: '🛻' },
+];
+
+const TANKS = [
+  { id: 't72', name: 'Т-72', price: 15000, icon: '🛡️' },
+  { id: 't90', name: 'Т-90', price: 25000, icon: '🛡️' },
+  { id: 'abrams', name: 'M1 Abrams', price: 35000, icon: '🛡️' },
+  { id: 'leopard', name: 'Leopard 2', price: 45000, icon: '🛡️' },
 ];
 
 const ShopScreen = ({ user, onBack, onUpdateUser }: ShopScreenProps) => {
+  const [activeTab, setActiveTab] = useState('weapons');
   const { toast } = useToast();
 
-  const handlePurchase = (weaponId: string, price: number) => {
+  const handlePurchase = (itemId: string, price: number, category: 'weapons' | 'vehicles' | 'tanks') => {
     if (user.balance < price) {
       toast({
         title: 'Недостаточно средств',
@@ -35,64 +51,90 @@ const ShopScreen = ({ user, onBack, onUpdateUser }: ShopScreenProps) => {
     const updatedUser = {
       ...user,
       balance: user.balance - price,
-      weapons: [...user.weapons, weaponId],
+      [category]: [...user[category], itemId],
     };
     storage.saveUser(updatedUser);
     onUpdateUser();
 
     toast({
       title: 'Покупка успешна! 🎖️',
-      description: 'Оружие добавлено в арсенал',
+      description: 'Товар добавлен в арсенал',
+    });
+  };
+
+  const renderItems = (items: any[], category: 'weapons' | 'vehicles' | 'tanks') => {
+    return items.map(item => {
+      const owned = user[category].includes(item.id);
+      return (
+        <Card key={item.id} className="p-6 bg-game-dark/90 border-game-purple hover:border-game-cyan transition-all">
+          <div className="text-center mb-4">
+            <div className="text-6xl mb-2">{item.icon}</div>
+            <h3 className="text-lg font-bold text-white">{item.name}</h3>
+            <p className="text-2xl text-game-gold font-bold mt-2">{item.price} 💰</p>
+          </div>
+          <Button
+            onClick={() => handlePurchase(item.id, item.price, category)}
+            disabled={owned}
+            className={`w-full ${owned ? 'bg-gray-600' : 'bg-game-purple hover:bg-game-cyan'}`}
+          >
+            {owned ? (
+              <>
+                <Icon name="Check" className="mr-2" />
+                Куплено
+              </>
+            ) : (
+              <>
+                <Icon name="ShoppingCart" className="mr-2" />
+                Купить
+              </>
+            )}
+          </Button>
+        </Card>
+      );
     });
   };
 
   return (
-    <div className="min-h-screen bg-military-dark p-4">
+    <div className="min-h-screen bg-game-darker p-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <Button onClick={onBack} variant="ghost" className="text-military-gold">
+          <Button onClick={onBack} variant="ghost" className="text-game-cyan">
             <Icon name="ArrowLeft" className="mr-2" />
             Назад
           </Button>
           <div className="text-right">
             <p className="text-sm text-gray-400">Баланс</p>
-            <p className="text-2xl text-green-400 font-bold">{user.balance} 💰</p>
+            <p className="text-2xl text-game-gold font-bold">{user.balance} 💰</p>
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-military-gold mb-6 text-center">Военный магазин</h1>
+        <h1 className="text-3xl font-bold text-game-gold mb-6 text-center">ВОЕННЫЙ МАГАЗИН</h1>
 
-        <div className="grid md:grid-cols-3 gap-4">
-          {WEAPONS.map(weapon => {
-            const owned = user.weapons.includes(weapon.id);
-            return (
-              <Card key={weapon.id} className="p-6 bg-military-camo/90 border-military-gold">
-                <div className="text-center mb-4">
-                  <div className="text-6xl mb-2">{weapon.icon}</div>
-                  <h3 className="text-lg font-bold text-white">{weapon.name}</h3>
-                  <p className="text-2xl text-military-gold font-bold mt-2">{weapon.price} 💰</p>
-                </div>
-                <Button
-                  onClick={() => handlePurchase(weapon.id, weapon.price)}
-                  disabled={owned}
-                  className={`w-full ${owned ? 'bg-gray-600' : 'bg-military-explosion hover:bg-military-danger'}`}
-                >
-                  {owned ? (
-                    <>
-                      <Icon name="Check" className="mr-2" />
-                      Куплено
-                    </>
-                  ) : (
-                    <>
-                      <Icon name="ShoppingCart" className="mr-2" />
-                      Купить
-                    </>
-                  )}
-                </Button>
-              </Card>
-            );
-          })}
-        </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-6 bg-game-dark">
+            <TabsTrigger value="weapons" className="data-[state=active]:bg-game-purple">
+              🔫 Оружие
+            </TabsTrigger>
+            <TabsTrigger value="vehicles" className="data-[state=active]:bg-game-purple">
+              🚙 Машины
+            </TabsTrigger>
+            <TabsTrigger value="tanks" className="data-[state=active]:bg-game-purple">
+              🛡️ Танки
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="weapons" className="grid md:grid-cols-3 gap-4">
+            {renderItems(WEAPONS, 'weapons')}
+          </TabsContent>
+
+          <TabsContent value="vehicles" className="grid md:grid-cols-2 gap-4">
+            {renderItems(VEHICLES, 'vehicles')}
+          </TabsContent>
+
+          <TabsContent value="tanks" className="grid md:grid-cols-2 gap-4">
+            {renderItems(TANKS, 'tanks')}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

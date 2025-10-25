@@ -24,15 +24,16 @@ const MainMenu = ({ user, onNavigate, onStartLevel, onLogout }: MainMenuProps) =
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-military-dark bg-[linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNkNGEyYyIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-game-darker bg-[radial-gradient(circle_at_50%_50%,_rgba(147,51,234,0.1)_0%,_transparent_50%)]">
       <div className="text-center mb-8 animate-fade-in">
-        <h1 className="text-6xl md:text-7xl font-bold text-military-gold mb-4 animate-pulse-glow" style={{ fontFamily: "'Press Start 2P', cursive" }}>
+        <h1 className="text-6xl md:text-7xl font-bold text-game-gold mb-4 animate-pulse-glow drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]" style={{ fontFamily: "'Press Start 2P', cursive" }}>
           WARZONE
         </h1>
         <div className="flex items-center justify-center gap-2 text-gray-300">
           <span className="text-xl">{user.avatar}</span>
-          <span className="text-lg">{user.nickname}</span>
-          <span className="text-sm text-military-gold">| {user.title}</span>
+          <span className="text-lg text-game-cyan">{user.nickname}</span>
+          <span className="text-sm text-game-purple">ID: {user.id}</span>
+          <span className="text-sm text-game-gold">| {user.title}</span>
         </div>
       </div>
 
@@ -41,7 +42,7 @@ const MainMenu = ({ user, onNavigate, onStartLevel, onLogout }: MainMenuProps) =
           <Button
             key={index}
             onClick={() => item.action ? item.action() : onNavigate(item.screen!)}
-            className="h-20 text-lg bg-military-camo hover:bg-military-explosion border-2 border-military-gold text-white font-bold transition-all hover:scale-105"
+            className="h-20 text-lg bg-game-dark hover:bg-game-purple border-2 border-game-purple hover:border-game-cyan text-white font-bold transition-all hover:scale-105 shadow-lg shadow-game-purple/20"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <Icon name={item.icon as any} className="mr-3" size={24} />
@@ -53,7 +54,7 @@ const MainMenu = ({ user, onNavigate, onStartLevel, onLogout }: MainMenuProps) =
       <Button
         onClick={onLogout}
         variant="ghost"
-        className="mt-8 text-military-danger hover:text-red-600 hover:bg-military-dark/50"
+        className="mt-8 text-game-explosion hover:text-red-600 hover:bg-game-dark/50"
       >
         <Icon name="LogOut" className="mr-2" size={18} />
         Выйти

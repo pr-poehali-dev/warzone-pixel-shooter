@@ -62,12 +62,14 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				military: {
-					dark: '#1a2e1a',
-					camo: '#3d4a2c',
-					explosion: '#ff6b35',
-					danger: '#e63946',
-					gold: '#f4a261',
+				game: {
+					dark: '#0a0e1a',
+					darker: '#050810',
+					purple: '#9333ea',
+					cyan: '#06b6d4',
+					explosion: '#ef4444',
+					gold: '#fbbf24',
+					green: '#22c55e',
 				},
 			},
 			borderRadius: {

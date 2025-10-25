@@ -75,7 +75,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
     }
 
     const newUser: User = {
-      id: `user_${Date.now()}`,
+      id: storage.generateNumericId(),
       email: formData.email,
       nickname: formData.nickname,
       password: formData.password,
@@ -89,6 +89,8 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
       completedBonusMissions: false,
       isAdmin: false,
       weapons: [],
+      vehicles: [],
+      tanks: [],
       friends: [],
     };
 
@@ -101,12 +103,12 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-military-dark bg-[linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNkNGEyYyIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')]">
-      <Card className="w-full max-w-md mx-4 bg-military-camo/90 border-military-gold">
+    <div className="min-h-screen flex items-center justify-center bg-game-darker bg-[radial-gradient(circle_at_50%_50%,_rgba(147,51,234,0.1)_0%,_transparent_50%)]">
+      <Card className="w-full max-w-md mx-4 bg-game-dark/90 border-game-purple shadow-2xl shadow-game-purple/20">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Icon name="Crosshair" className="text-military-explosion" size={40} />
-            <CardTitle className="text-4xl font-bold text-military-gold" style={{ fontFamily: "'Press Start 2P', cursive" }}>
+            <Icon name="Crosshair" className="text-game-purple" size={40} />
+            <CardTitle className="text-4xl font-bold text-game-gold" style={{ fontFamily: "'Press Start 2P', cursive" }}>
               WARZONE
             </CardTitle>
           </div>
@@ -123,7 +125,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
                 id="email"
                 type="email"
                 placeholder="soldier@warzone.com"
-                className="bg-military-dark border-military-camo text-white"
+                className="bg-game-darker border-game-purple text-white"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
@@ -157,7 +159,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
 
           <Button
             onClick={isRegistering ? handleRegister : handleLogin}
-            className="w-full bg-military-explosion hover:bg-military-danger text-white font-bold"
+            className="w-full bg-game-purple hover:bg-game-cyan text-white font-bold"
           >
             {isRegistering ? (
               <>
@@ -175,7 +177,7 @@ const AuthScreen = ({ onLogin }: AuthScreenProps) => {
           <Button
             variant="ghost"
             onClick={() => setIsRegistering(!isRegistering)}
-            className="w-full text-military-gold hover:text-military-explosion hover:bg-military-dark/50"
+            className="w-full text-game-cyan hover:text-game-purple hover:bg-game-darker/50"
           >
             {isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Регистрация'}
           </Button>

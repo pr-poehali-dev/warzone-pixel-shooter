@@ -13,6 +13,8 @@ export interface User {
   completedBonusMissions: boolean;
   isAdmin: boolean;
   weapons: string[];
+  vehicles: string[];
+  tanks: string[];
   friends: string[];
 }
 
@@ -27,6 +29,10 @@ const STORAGE_KEYS = {
   CURRENT_USER: 'warzone_current_user',
   CHAT_MESSAGES: 'warzone_chat',
   MULTIPLAYER_MATCHES: 'warzone_matches',
+};
+
+const generateNumericId = (): string => {
+  return Math.floor(100000000 + Math.random() * 900000000).toString();
 };
 
 export const storage = {
@@ -79,7 +85,7 @@ export const storage = {
     
     if (!adminExists) {
       const adminUser: User = {
-        id: 'Dev-Team',
+        id: '100000001',
         email: 'admin@warzone.dev',
         nickname: 'plutka',
         password: 'user',
@@ -93,6 +99,8 @@ export const storage = {
         completedBonusMissions: true,
         isAdmin: true,
         weapons: [],
+        vehicles: [],
+        tanks: [],
         friends: [],
       };
       storage.saveUser(adminUser);
@@ -109,6 +117,8 @@ export const storage = {
     messages.push(message);
     localStorage.setItem(STORAGE_KEYS.CHAT_MESSAGES, JSON.stringify(messages));
   },
+
+  generateNumericId,
 };
 
 storage.initAdmin();
